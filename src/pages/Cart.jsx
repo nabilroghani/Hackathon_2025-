@@ -10,14 +10,24 @@ export default function Cart() {
   const tax = subtotal * 0.05;
   const total = subtotal + tax;
 
+  const handleDecrease = (id, qty) => {
+    if (qty <= 1) {
+      removeFromCart(id);
+    } else {
+      updateQty(id, qty - 1);
+    }
+  };
+
   return (
     <div className="cart-page">
-      <h2>Your Shopping Cart</h2>
+      <h2 className="cart-title">🛍️ Your Shopping Cart</h2>
 
       {cart.length === 0 ? (
         <div className="empty-cart">
           <p>Your cart is empty 🛒</p>
-          <NavLink className="shop-btn" to="/">Continue Shopping</NavLink>
+          <NavLink className="shop-btn" to="/">
+            Continue Shopping
+          </NavLink>
         </div>
       ) : (
         <>
@@ -27,16 +37,18 @@ export default function Cart() {
                 <img src={item.image} alt={item.title} />
                 <div className="cart-info">
                   <h4>{item.title}</h4>
-                  <p>${item.price.toFixed(2)}</p>
+                  <p className="price">${item.price.toFixed(2)}</p>
 
                   <div className="qty-controls">
                     <button
-                      onClick={() => updateQty(item.id, item.qty - 1)}
+                      className="qty-btn"
+                      onClick={() => handleDecrease(item.id, item.qty)}
                     >
                       -
                     </button>
                     <span>{item.qty}</span>
                     <button
+                      className="qty-btn"
                       onClick={() => updateQty(item.id, item.qty + 1)}
                     >
                       +
@@ -47,7 +59,7 @@ export default function Cart() {
                     className="remove-btn"
                     onClick={() => removeFromCart(item.id)}
                   >
-                    Remove
+                    🗑 Remove
                   </button>
                 </div>
               </div>
@@ -56,9 +68,15 @@ export default function Cart() {
 
           <div className="cart-summary">
             <h3>Payment Summary</h3>
-            <p>Subtotal: <span>${subtotal.toFixed(2)}</span></p>
-            <p>Tax (5%): <span>${tax.toFixed(2)}</span></p>
-            <h4>Total: <span>${total.toFixed(2)}</span></h4>
+            <p>
+              Subtotal: <span>${subtotal.toFixed(2)}</span>
+            </p>
+            <p>
+              Tax (5%): <span>${tax.toFixed(2)}</span>
+            </p>
+            <h4>
+              Total: <span>${total.toFixed(2)}</span>
+            </h4>
 
             <NavLink className="checkout-btn" to="/checkout">
               Proceed to Checkout
